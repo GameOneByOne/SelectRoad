@@ -12,9 +12,9 @@ std::string FormatIndex(int index, int length)
     return indexStr;
 }
 
-int GetRandomFromRange(int min, int max)
+int GetRandomFromRange(const std::pair<int, int> &range)
 {
-    return (random() % (max - min)) + min;
+    return (random() % (range.second - range.first)) + range.first;
 }
 
 Animate *GetAnimate(GameDeclare::Anim::AnimInfo animInfo, float delay, unsigned int loops)

@@ -1,110 +1,86 @@
-#include <ActorModel/ActorModel.h>
+#include "ActorModel.h"
 #include <map>
 #include <functional>
 
+#include "BattleCalc/BattleCalc.h"
 #include "GameDeclare/AnimDeclare.h"
+#include "GameDeclare/DefineDeclare.h"
 #include "GameUtils/GameUtils.h"
 
 USING_NS_CC;
 
 namespace {
-
-
-Actor CreatePlayerActor()
+ActorModel GetPlayerModel()
 {
-    Actor genActor;
-    genActor.HP = GameUtils::GetRandomFromRange(210, 220);
-    genActor.HPMax = genActor.HP;
-    genActor.attack = GameUtils::GetRandomFromRange(10, 20);
-    genActor.defense = GameUtils::GetRandomFromRange(10, 20);
-    genActor.luck = GameUtils::GetRandomFromRange(10, 20);
-    genActor.duck = GameUtils::GetRandomFromRange(10, 20);
-    genActor.coolness = GameUtils::GetRandomFromRange(10, 20);
+    INIT_ONCE_BEGIN(ActorModel)
+    object.HPRange = {150, 170};
+    object.attackRange = {10, 20};
+    object.defenseRange = {10, 20};
+    object.luckRange = {10, 20};
+    object.duckRange = {10, 20};
+    object.coolnessRange = {10, 20};
+    object.canAttackTypes = {AttackType::COMMON};
     
-    genActor.idleAnim = GameUtils::GetAnimate(GameDeclare::Anim::playerIdleAnim, 0.05f, -1);
-    genActor.hurtAnim = GameUtils::GetAnimate(GameDeclare::Anim::playerHurtAnim, 0.05f, 1);
-    genActor.attackAnim = GameUtils::GetAnimate(GameDeclare::Anim::playerAttackAnim, 0.05f, 1);
-    genActor.idleAnim->setTag(0);
-    genActor.hurtAnim->setTag(1);
-    genActor.attackAnim->setTag(2);
-    genActor.idleAnim->retain();
-    genActor.hurtAnim->retain();
-    genActor.attackAnim->retain();
-    return genActor;
+    object.idleAnim = GameDeclare::Anim::playerIdleAnim;
+    object.hurtAnim = GameDeclare::Anim::playerHurtAnim;
+    object.meleeAttackAnim = GameDeclare::Anim::playerAttackAnim;
+    INIT_ONCE_END()
+    return object;
 }
 
-Actor CreateMonsterOneActor()
+ActorModel GetMonsterOneModel()
 {
-    Actor genActor;
-    genActor.HP = GameUtils::GetRandomFromRange(12, 35);
-    genActor.HPMax = genActor.HP;
-    genActor.attack = GameUtils::GetRandomFromRange(30, 40);
-    genActor.defense = GameUtils::GetRandomFromRange(5, 10);
-    genActor.luck = GameUtils::GetRandomFromRange(5, 10);
-    genActor.duck = GameUtils::GetRandomFromRange(5, 10);
-    genActor.coolness = GameUtils::GetRandomFromRange(5, 10);
-    return genActor;
+    INIT_ONCE_BEGIN(ActorModel)
+    object.HPRange = {12, 35};
+    object.attackRange = {5, 10};
+    object.defenseRange = {5, 10};
+    object.luckRange = {5, 10};
+    object.duckRange = {5, 10};
+    object.coolnessRange = {5, 10};
+    object.canAttackTypes = {AttackType::COMMON};
+
+    object.idleAnim = GameDeclare::Anim::golemIdleAnim;
+    object.hurtAnim = GameDeclare::Anim::golemHurtAnim;
+    object.meleeAttackAnim = GameDeclare::Anim::golemAttackAnim;
+    INIT_ONCE_END()
+    return object;
 }
 
-Actor CreateMonsterTwoActor()
-{
-    Actor genActor;
-    genActor.HP = GameUtils::GetRandomFromRange(12, 35);
-    genActor.HPMax = genActor.HP;
-    genActor.attack = GameUtils::GetRandomFromRange(5, 10);
-    genActor.defense = GameUtils::GetRandomFromRange(5, 10);
-    genActor.luck = GameUtils::GetRandomFromRange(5, 10);
-    genActor.duck = GameUtils::GetRandomFromRange(5, 10);
-    genActor.coolness = GameUtils::GetRandomFromRange(5, 10);
-
-    genActor.idleAnim = GameUtils::GetAnimate(GameDeclare::Anim::golemIdleAnim, 0.05f, -1);
-    genActor.hurtAnim = GameUtils::GetAnimate(GameDeclare::Anim::golemHurtAnim, 0.05f, 1);
-    genActor.attackAnim = GameUtils::GetAnimate(GameDeclare::Anim::golemAttackAnim, 0.05f, 1);
-    genActor.idleAnim->setTag(0);
-    genActor.hurtAnim->setTag(1);
-    genActor.attackAnim->setTag(2);
-    genActor.idleAnim->retain();
-    genActor.hurtAnim->retain();
-    genActor.attackAnim->retain();
-    return genActor;
-}
-
-const std::map<ActorModel, std::function<Actor(void)>> g_actorInfoMap = {
-    {ActorModel::PLAYER, CreatePlayerActor},
-    {ActorModel::MONSTER_ONE, CreateMonsterOneActor},
-    {ActorModel::MONSTER_TWO, CreateMonsterTwoActor}
+const std::map<ActorName, std::function<ActorModel(void)>> ACTOR_MODEL_MAP = {
+    {ActorName::PLAYER, GetPlayerModel},
+    {ActorName::MONSTER_ONE, GetMonsterOneModel}
 };
 }
 
-Actor Actor::Create(ActorModel model)
+Actor ActorFactory::Generate(const ActorName &name)
 {
-    auto iter = g_actorInfoMap.find(model);
-    if (iter == g_actorInfoMap.end()) {
-        return Actor();
-    }
+    ActorModel model = GetActorModel(name);
+    return CreateActor(model);
+}
 
+ActorModel ActorFactory::GetActorModel(const ActorName &name)
+{   
+    const auto iter = ACTOR_MODEL_MAP.find(name);
     return iter->second();
 }
 
-void Actor::AddCard(Card card)
+Actor ActorFactory::CreateActor(const ActorModel &model)
 {
-    switch(card.type) {
-        case CardType::ADDITION:
-            AddAdditionCard(card);
-            break;
-        default:
-            break;
-    }
-    return;    
-}
+    // 用于每个Actor的唯一标识生成
+    static int actorId = 0;
 
-void Actor::AddAdditionCard(Card card)
-{
-    HP = MIN(HP + card.HPAddition, HPMax);
-    attack += card.attackAddition;
-    defense += card.defenseAddition;
-    luck += card.luckAddition;
-    duck += card.duckAddition;
-    coolness += card.coolnessAddition;
-    return;
+    // 使用对应的actorModel里指定的数值范围，来生成出一个随机属性的Actor
+    Actor genActor;
+    genActor.id = ++actorId;
+    genActor.HP = GameUtils::GetRandomFromRange(model.HPRange);
+    genActor.HPMax = genActor.HP;
+    genActor.attack = GameUtils::GetRandomFromRange(model.attackRange);
+    genActor.defense = GameUtils::GetRandomFromRange(model.defenseRange);
+    genActor.coolness = GameUtils::GetRandomFromRange(model.coolnessRange);
+    genActor.duck = GameUtils::GetRandomFromRange(model.duckRange);
+    genActor.luck = GameUtils::GetRandomFromRange(model.luckRange);
+    genActor.idleAnim = model.idleAnim;
+    genActor.hurtAnim = model.hurtAnim;
+    genActor.meleeAttackAnim = model.meleeAttackAnim;
+    return genActor;
 }

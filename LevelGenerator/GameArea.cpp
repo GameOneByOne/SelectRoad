@@ -8,26 +8,23 @@
 namespace {
 GameArea InitLostForestArea()
 {   
-    INIT_ONCE_BEGIN(GameArea);
+    INIT_ONCE_BEGIN(GameArea)
+    object.monsterMaxNum = 1;
     object.name = "Lost Forest";
     object.describe = "this is lost forest.";
-    object.actors = {Actor::Create(ActorModel::MONSTER_ONE)};
+    object.monsters = {ActorName::MONSTER_ONE};
     object.cards = {Card::Get(CardDescriber::AttackAddCard), Card::Get(CardDescriber::DefenseAddCard), Card::Get(CardDescriber::HPAddCard)};
-    INIT_ONCE_END();
+    INIT_ONCE_END()
     return object;
 }
 
-const std::map<Area, std::function<GameArea(void)>> g_areaInfoMap = {
-    {Area::LOST_FOREST, InitLostForestArea}
+const std::map<AreaName, std::function<GameArea(void)>> AREA_INFO_MAP = {
+    {AreaName::LOST_FOREST, InitLostForestArea}
 };
 }
 
-GameArea GameArea::GetInfo(Area area)
+GameArea GameArea::GetInfo(AreaName area)
 {
-    auto iter = g_areaInfoMap.find(area);
-    if (iter == g_areaInfoMap.end()) {
-        return GameArea();
-    }
-
+    const auto iter = AREA_INFO_MAP.find(area);
     return iter->second();
 }

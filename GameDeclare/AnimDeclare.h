@@ -2,6 +2,12 @@
 #include <cocos2d.h>
 #include <string>
 
+enum ANIM_TAG {
+    IDLE = 0,
+    HURT = 1,
+    MELEE_ATTACK = 2
+};
+
 namespace GameDeclare {
 namespace Anim {
 const std::string animDir = "anim/Actor/";

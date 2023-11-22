@@ -3,7 +3,7 @@
 #include "GameDeclare/DefineDeclare.h"
 #include "ActorModel/ActorModel.h"
 #include "BattleCalc/BattleCalc.h"
-#include "LevelGenerator/GameArea.h"
+#include "..\LevelGenerator\GameArea.h"
 
 enum class GameStage {
     LEVEL_GENERATE_STATUS,
@@ -27,11 +27,11 @@ public:
 
 public:
     // 人物控制相关
-    Actor playerActor; // 玩家的人物控制器
-    std::vector<Actor> monsterActors; // 怪物的人物控制器，以后可能会有多只怪物，所以设置成数组
+    std::vector<Actor> playerActors; // 玩家的人物控制器，会有多个玩家actor，所以设置成数组
+    std::vector<Actor> monsterActors; // 怪物的人物控制器，可能会有多只怪物，所以设置成数组
 		  
     // 关卡相关
-    Area currentArea; // 当前游戏区域
+    AreaName currentArea; // 当前游戏区域
     std::vector<Card> dropCards; // 当前关卡结束后，应该掉落的卡牌
     
     // 游戏推进相关

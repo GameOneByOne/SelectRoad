@@ -6,7 +6,6 @@
 #include "GameDeclare/PositionDeclare.h"
 #include "GameDeclare/SizeDeclare.h"
 #include "GameDeclare/FontDeclare.h"
-#include "GameSettleUp/GameSettleUp.h"
 
 USING_NS_CC;
 
@@ -18,7 +17,7 @@ const float MENU_Y_OFFSET = 35.0f;
 Scene* WelcomeScene::Show()
 {
     auto pRet = new (std::nothrow) WelcomeScene();
-    if (pRet && pRet->Init()) {
+    if (pRet && pRet->InitScene()) {
         pRet->autorelease();
         return pRet;
     } else {
@@ -27,7 +26,7 @@ Scene* WelcomeScene::Show()
     }
 }
 
-bool WelcomeScene::Init()
+bool WelcomeScene::InitScene()
 {
     if (!Scene::init()) {
         return false;
@@ -58,15 +57,14 @@ void WelcomeScene::InitMenu()
     auto startGameLabel = Label::createWithTTF("Start Game", GameDeclare::Font::FELT_TTF, 24);
     auto startGameMenuItem = MenuItemLabel::create(startGameLabel, WelcomeScene::StartGameCallback);
     startGameMenuItem->setAnchorPoint(GameDeclare::Position::LEFT_BOTTOM);
-    startGameMenuItem->setPosition(0.0f, 0.0f);
     auto quitGameLabel = Label::createWithTTF("Quit", GameDeclare::Font::FELT_TTF, 24);
     auto quitGameMenuItem = MenuItemLabel::create(quitGameLabel, WelcomeScene::QuitCallback);
     quitGameMenuItem->setAnchorPoint(GameDeclare::Position::LEFT_BOTTOM);
-    quitGameMenuItem->setPosition(0.0f, -1 * MENU_Y_OFFSET);
 
     startMenu = Menu::create(startGameMenuItem, quitGameMenuItem, nullptr);
     float x = GameDeclare::Size::screen.width - startGameMenuItem->getBoundingBox().size.width - MENU_X_OFFSET;
     startMenu->setPosition(x, MENU_Y_OFFSET * 2);
+    startMenu->alignItemsVertically();
     addChild(startMenu, 1);
     return;
 }

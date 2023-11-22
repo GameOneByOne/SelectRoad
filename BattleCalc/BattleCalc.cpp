@@ -6,18 +6,12 @@ USING_NS_CC;
 void BattleCalc::Calc()
 {
     battleDetails.clear();
-    player = GameSettleUp::GetInstance().playerActor;
+    players = GameSettleUp::GetInstance().playerActors;
     monsters = GameSettleUp::GetInstance().monsterActors;
-    while (!IsPlayerDead() && !IsMonsterDead()) {
-        BattleDetail detail;
-        /* 每回合战斗有被偷袭的概率，被偷袭之后由怪物先手，该概率与冷静值有关 */
-        if (BySurpriseAttack()) {
-            MonsterAttackRound();
-            PlayerAttackRound();
-        } else {
-            PlayerAttackRound();
-            MonsterAttackRound();
-        }
+    while (!IsPlayerAllDead() && !IsMonsterAllDead()) {
+        /* 每回合双方只会有一个随机的actor进行攻击，攻击对象也是随机的 */
+        PlayerAttackRound();
+        MonsterAttackRound();
     }
     
     /* 战斗结束，则改变游戏状态机 */
@@ -28,17 +22,17 @@ void BattleCalc::Calc()
 
 void BattleCalc::PlayerAttackRound()
 {
-    /* 玩家攻击回合 */
+    /* 一个玩家攻击回合，会随机挑选怪物进行战斗 */
     for (auto &monster : monsters) {
-        if ((monster.HP == 0) || (player.HP == 0)) {
+        if ((monster.HP == 0) || (players[0].HP == 0)) {
             continue;
         }
-        monster.HP = MAX(monster.HP - player.attack, 0);
+        monster.HP = MAX(monster.HP - players[0].attack, 0);
         BattleDetail detail;
-        detail.isPlayerRound = true;
-        detail.curPlayer = player;
-        detail.curMonsters = monsters;
-        battleDetails.push_back(detail);
+        // detail.isPlayerRound = true;
+        // detail.curPlayers = players;
+        // detail.curMonsters = monsters;
+        // battleDetails.push_back(detail);
         break;
     }
 
@@ -47,31 +41,36 @@ void BattleCalc::PlayerAttackRound()
 
 void BattleCalc::MonsterAttackRound()
 {
-    /* 怪物攻击回合 */
-    for (auto &monster : monsters) {
-        if ((monster.HP == 0) || (player.HP == 0)) {
-            continue;
-        }
-        player.HP = MAX(player.HP - monster.attack, 0);
-        BattleDetail detail;
-        detail.isPlayerRound = false;
-        detail.curPlayer = player;
-        detail.curMonsters = monsters;
-        battleDetails.push_back(detail);
-    }
+    /* 选择一个随机的怪物进行攻击， 也选择一个随机的玩家被攻击 */
+    // Actor &monster = PickRandomActor(monsters);
+    // Actor &player = PickRandomActor(players);
 
+    // player.HP = MAX(player.HP - monster.attack, 0);
+    // BattleDetail detail;
+    // detail.isPlayerRound = false;
+    // detail.curPlayers = players;
+    // detail.curMonsters = monsters;
+    // battleDetails.push_back(detail);
     return;
 }
 
-bool BattleCalc::IsPlayerDead()
+const Actor &BattleCalc::PickRandomActor(const std::vector<Actor> &Actors)
 {
-    if (player.HP == 0) {
-        return true;
-    }
-    return false;
+    return Actors[random() % Actors.size()];
 }
 
-bool BattleCalc::IsMonsterDead()
+bool BattleCalc::IsPlayerAllDead()
+{
+    for (const auto &player : players) {
+        if (player.HP > 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool BattleCalc::IsMonsterAllDead()
 {
     for (const auto &monster : monsters) {
         if (monster.HP > 0) {
@@ -80,9 +79,3 @@ bool BattleCalc::IsMonsterDead()
     }
     return true;
 }
-
-bool BattleCalc::BySurpriseAttack()
-{
-    return false;
-}
-

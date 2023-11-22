@@ -13,7 +13,7 @@ USING_NS_CC;
 Scene* ConductScene::Show()
 {
     auto pRet = new (std::nothrow) ConductScene();
-    if (pRet && pRet->Init()) {
+    if (pRet && pRet->InitScene()) {
         pRet->autorelease();
         return pRet;
     } else {
@@ -22,7 +22,7 @@ Scene* ConductScene::Show()
     }
 }
 
-bool ConductScene::Init()
+bool ConductScene::InitScene()
 {
     if (!Scene::init()) {
         return false;
@@ -32,31 +32,14 @@ bool ConductScene::Init()
     GameSettleUp::GetInstance().Init();
     LevelGenerator::GetInstance().Generate();
 
-    battlePanel = BattlePanel::InitLayer();
-    areaInfoPanel = AreaInfoPanel::InitLayer();
-    actorInfoPanel = ActorInfoPanel::InitLayer();
-    monsterInfoPanel = MonsterInfoPanel::InitLayer();
-    InitConductLogPanel();
-
-    addChild(battlePanel, 10);
-    addChild(areaInfoPanel);
-    addChild(actorInfoPanel);
-    addChild(monsterInfoPanel);
+    // battlePanel = BattlePanel::InitLayer();
+    // actorInfoPanel = ActorInfoPanel::InitLayer();
+    //
+    // addChild(battlePanel, 10);
+    // addChild(actorInfoPanel);
     
     scheduleUpdate();
     return true;
-}
-
-void ConductScene::InitConductLogPanel()
-{
-    conductLogPanel = Sprite::create(GameDeclare::Image::infoPanelImage.path, GameDeclare::Image::infoPanelImage.rect);
-    conductLogPanel->setAnchorPoint(GameDeclare::Position::LEFT_BOTTOM);
-    float scaleX = GameDeclare::Size::screen.width / conductLogPanel->getBoundingBox().size.width / 3.0f;
-    float scaleY =  GameDeclare::Size::screen.height / conductLogPanel->getBoundingBox().size.height / 3.0f;
-    conductLogPanel->setPosition({GameDeclare::Size::screen.width * 0.33f, 0.0f});
-    conductLogPanel->setScale(scaleX, scaleY);
-    addChild(conductLogPanel);
-    return;
 }
 
 void ConductScene::update(float delta)
@@ -83,8 +66,6 @@ void ConductScene::update(float delta)
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::BEGIN_SELECT_STATUS) {
-        selectInfoPanel = SelectPanel::InitLayer();
-        addChild(selectInfoPanel);
         GameSettleUp::GetInstance().stage = GameStage::WAIT_SELECT_STATUS;
     }
 
@@ -93,14 +74,10 @@ void ConductScene::update(float delta)
     }
     
     if (GameSettleUp::GetInstance().stage == GameStage::END_SELECT_STATUS) {
-        removeChild(selectInfoPanel);
-        selectInfoPanel = nullptr;
         GameSettleUp::GetInstance().stage = GameStage::LEVEL_GENERATE_STATUS;
     }
     
-    battlePanel->update(delta);
-    areaInfoPanel->update(delta);
-    actorInfoPanel->update(delta);
-    monsterInfoPanel->update(delta);
+    // battlePanel->update(delta);
+    // actorInfoPanel->update(delta);
     return;
 }

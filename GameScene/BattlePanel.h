@@ -18,8 +18,8 @@ private:
     cocos2d::Sprite *player = nullptr;
     cocos2d::Sprite *monster = nullptr;
 
-    Actor playerInfo; // 存储下次应该更新的玩家数据
-    std::vector<Actor> monsterInfo; // 存储下次应该更新的怪物数据
+    std::vector<Actor> playersInfo; // 存储下次应该更新的玩家数据
+    std::vector<Actor> monstersInfo; // 存储下次应该更新的怪物数据
 
     bool playerOtherAniRunning = false; // 判定玩家是否有除了Idle以外其他动画在播放
     bool monsterOtherAniRunning = false; // 判定怪物是否有除了Idle以外其他动画在播放
