@@ -12,9 +12,6 @@ public:
     virtual void update(float delta) override;
 
 private:
-    void InitConductLogPanel();
-
-private:
     cocos2d::Layer *battlePanel = nullptr;
     cocos2d::Layer *actorInfoPanel = nullptr;
 };

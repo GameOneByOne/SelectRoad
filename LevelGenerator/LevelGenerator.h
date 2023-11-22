@@ -8,5 +8,5 @@ class LevelGenerator {
     DECLARE_SINGLETON(LevelGenerator)
 
 public:
-    void Generate();
+    static void Generate(const AreaName &areaName);
 };

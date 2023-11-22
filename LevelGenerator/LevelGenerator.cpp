@@ -4,10 +4,10 @@
 
 USING_NS_CC;
 
-void LevelGenerator::Generate()
+void LevelGenerator::Generate(const AreaName &areaName)
 {
     /* 获取当前区域信息 */
-    GameArea curArea = GameArea::GetInfo(GameSettleUp::GetInstance().currentArea);
+    GameArea curArea = GameArea::GetInfo(areaName);
     
     /* 按区域生成怪物 */
     GameSettleUp::GetInstance().monsterActors.clear();
@@ -22,8 +22,10 @@ void LevelGenerator::Generate()
     GameSettleUp::GetInstance().dropCards.push_back(Card::Get(CardDescriber::HPAddCard));
     GameSettleUp::GetInstance().dropCards.push_back(Card::Get(CardDescriber::AttackAddCard));
     GameSettleUp::GetInstance().dropCards.push_back(Card::Get(CardDescriber::DefenseAddCard));
-    
+
     /* 设置游戏的状态 */
     GameSettleUp::GetInstance().stage = GameStage::BATTLE_STATUS;
+    log("[LevelGenerator] A new level generate finished. [area=%s, monsterNum=%d]", curArea.name.c_str(),
+        needGenerateMonsterNum);
     return;
 }
