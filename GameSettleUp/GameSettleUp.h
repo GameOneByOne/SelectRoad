@@ -7,6 +7,7 @@
 
 enum class GameStage {
     LEVEL_GENERATE_STATUS,
+    PLACE_ACTOR_STATUS,
     BATTLE_STATUS,
     ANIMATION_STATUS,
     SETTLE_UP_STATUS,
@@ -25,10 +26,13 @@ public:
     void ShowSelect(); // 进入抉择状态
     void UnInit(); // 当游戏结束的时候，会调用这个函数，打印最终的游戏结束画面
 
+    /* 对其他组件提供一些查询和获取方法 */
+    const Actor &GetActorById(int actorId) const;
+
 public:
     // 人物控制相关
-    std::vector<Actor> playerActors; // 玩家的人物控制器，会有多个玩家actor，所以设置成数组
-    std::vector<Actor> monsterActors; // 怪物的人物控制器，可能会有多只怪物，所以设置成数组
+    std::map<int, Actor> playerActors; // 玩家的人物组
+    std::map<int, Actor> monsterActors; // 怪物的人物组
 		  
     // 关卡相关
     AreaName currentArea; // 当前游戏区域

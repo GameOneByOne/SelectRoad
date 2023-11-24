@@ -31,10 +31,10 @@ bool ConductScene::InitScene()
     /* 初始化界面及游戏结算器， 之后就会进入update函数，开始主逻辑循环 */
     GameSettleUp::GetInstance().Init();
 
-    // battlePanel = BattlePanel::InitLayer();
+    battleLayer = BattleLayer::InitLayer();
     // actorInfoPanel = ActorInfoPanel::InitLayer();
     //
-    // addChild(battlePanel, 10);
+    addChild(battleLayer, 10);
     // addChild(actorInfoPanel);
     
     scheduleUpdate();
@@ -46,6 +46,10 @@ void ConductScene::update(float delta)
     /* 这里的控制流，采用状态机的模式 */
     if (GameSettleUp::GetInstance().stage == GameStage::LEVEL_GENERATE_STATUS) {
         LevelGenerator::Generate(GameSettleUp::GetInstance().currentArea);
+    }
+
+    if (GameSettleUp::GetInstance().stage == GameStage::PLACE_ACTOR_STATUS) {
+        battleLayer->PlaceActor();
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::BATTLE_STATUS) {

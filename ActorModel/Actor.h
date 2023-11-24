@@ -7,6 +7,7 @@
 #include "GameDeclare/AnimDeclare.h"
 
 enum class ActorName {
+    DEFAULT,
     PLAYER,
     MONSTER_ONE
 };

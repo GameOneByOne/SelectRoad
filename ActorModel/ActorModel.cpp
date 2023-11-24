@@ -10,6 +10,24 @@
 USING_NS_CC;
 
 namespace {
+ActorModel GetDefaultModel()
+{
+    INIT_ONCE_BEGIN(ActorModel)
+    object.HPRange = {0, 0};
+    object.attackRange = {0, 0};
+    object.defenseRange = {0, 0};
+    object.luckRange = {0, 0};
+    object.duckRange = {0, 0};
+    object.coolnessRange = {0, 0};
+    object.canAttackTypes = {};
+
+    object.idleAnim = GameDeclare::Anim::AnimInfo();
+    object.hurtAnim = GameDeclare::Anim::AnimInfo();
+    object.meleeAttackAnim = GameDeclare::Anim::AnimInfo();
+    INIT_ONCE_END()
+    return object;
+}
+
 ActorModel GetPlayerModel()
 {
     INIT_ONCE_BEGIN(ActorModel)
@@ -47,8 +65,10 @@ ActorModel GetMonsterOneModel()
 }
 
 const std::map<ActorName, std::function<ActorModel(void)>> ACTOR_MODEL_MAP = {
+    {ActorName::DEFAULT, GetDefaultModel},
     {ActorName::PLAYER, GetPlayerModel},
     {ActorName::MONSTER_ONE, GetMonsterOneModel}
+
 };
 }
 

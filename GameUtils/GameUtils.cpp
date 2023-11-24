@@ -17,6 +17,11 @@ int GetRandomFromRange(const std::pair<int, int> &range)
     return (random() % (range.second - range.first)) + range.first;
 }
 
+float GetRandomFromRangeF(const std::pair<float, float> &range)
+{
+    return (random() % (int)(range.second - range.first)) + range.first;
+}
+
 Animate *GetAnimate(GameDeclare::Anim::AnimInfo animInfo, float delay, unsigned int loops)
 {
     SpriteFrame *frame = nullptr;

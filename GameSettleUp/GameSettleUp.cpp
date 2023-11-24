@@ -9,7 +9,8 @@ void GameSettleUp::Init()
     currentArea = AreaName::LOST_FOREST;
     stage = GameStage::LEVEL_GENERATE_STATUS;
     playerActors.clear();
-    playerActors.push_back(ActorFactory::Generate(ActorName::PLAYER));
+    Actor playerActor = ActorFactory::Generate(ActorName::PLAYER);
+    playerActors[playerActor.id] = playerActor;
     log("[GameSettleUp] Game SettleUp Machine init finished.");
     return;
 }
@@ -29,4 +30,21 @@ void GameSettleUp::ShowSelect()
 {
     stage = GameStage::LEVEL_GENERATE_STATUS;
     return;
+}
+
+const Actor &GameSettleUp::GetActorById(int actorId) const
+{
+    for (const auto &actor : playerActors) {
+        if (actor.first == actorId) {
+            return actor.second;
+        }
+    }
+
+    for (const auto &actor : monsterActors) {
+        if (actor.first == actorId) {
+            return actor.second;
+        }
+    }
+
+    return ActorFactory::Generate(ActorName::DEFAULT);
 }

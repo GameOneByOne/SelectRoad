@@ -2,7 +2,7 @@
 
 #include "cocos2d.h"
 #include "SingleActorInfoPanel.h"
-#include "GameScene/BattlePanel.h"
+#include "BattleLayer.h"
 
 class ConductScene : public cocos2d::Scene
 {
@@ -12,6 +12,6 @@ public:
     virtual void update(float delta) override;
 
 private:
-    cocos2d::Layer *battlePanel = nullptr;
+    BattleLayer *battleLayer = nullptr;
     cocos2d::Layer *actorInfoPanel = nullptr;
 };
