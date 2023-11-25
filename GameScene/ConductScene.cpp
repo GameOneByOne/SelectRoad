@@ -32,11 +32,8 @@ bool ConductScene::InitScene()
     GameSettleUp::GetInstance().Init();
 
     battleLayer = BattleLayer::InitLayer();
-    // actorInfoPanel = ActorInfoPanel::InitLayer();
-    //
     addChild(battleLayer, 10);
-    // addChild(actorInfoPanel);
-    
+
     scheduleUpdate();
     return true;
 }
@@ -46,18 +43,21 @@ void ConductScene::update(float delta)
     /* 这里的控制流，采用状态机的模式 */
     if (GameSettleUp::GetInstance().stage == GameStage::LEVEL_GENERATE_STATUS) {
         LevelGenerator::Generate(GameSettleUp::GetInstance().currentArea);
+        GameSettleUp::GetInstance().stage = GameStage::PLACE_ACTOR_STATUS;
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::PLACE_ACTOR_STATUS) {
         battleLayer->PlaceActor();
+        GameSettleUp::GetInstance().stage = GameStage::BATTLE_STATUS;
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::BATTLE_STATUS) {
         BattleCalc::GetInstance().Calc();
+        GameSettleUp::GetInstance().stage = GameStage::ANIMATION_STATUS;
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::ANIMATION_STATUS) {
-        // nothing to do.
+        battleLayer->PlayBattleDetails();
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::SETTLE_UP_STATUS) {
@@ -80,7 +80,5 @@ void ConductScene::update(float delta)
         GameSettleUp::GetInstance().stage = GameStage::LEVEL_GENERATE_STATUS;
     }
     
-    // battlePanel->update(delta);
-    // actorInfoPanel->update(delta);
     return;
 }

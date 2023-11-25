@@ -133,6 +133,11 @@ void BattleLayer::PlaceActor()
     return;
 }
 
+void BattleLayer::PlayBattleDetails()
+{
+    return;
+}
+
 void BattleLayer::update(float delta)
 {
     return;

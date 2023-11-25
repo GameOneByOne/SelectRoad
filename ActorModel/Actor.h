@@ -51,12 +51,15 @@ public:
     // Buff属性
     int luck; // 幸运值
     int duck; // 闪避值
-    int coolness; // 冷静值 
+    int coolness; // 冷静值
 
     // 动画相关
     GameDeclare::Anim::AnimInfo idleAnim;
     GameDeclare::Anim::AnimInfo hurtAnim;
     GameDeclare::Anim::AnimInfo meleeAttackAnim;
+
+    // 用于其他用途的数据
+    bool canAttack = true;
 
 private:
     void AddAdditionCard(const Card &card);

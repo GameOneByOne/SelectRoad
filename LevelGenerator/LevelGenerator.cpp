@@ -16,6 +16,8 @@ void LevelGenerator::Generate(const AreaName &areaName)
         ActorName monsterName = curArea.monsters[random() % curArea.monsters.size()];
         Actor monsterActor = ActorFactory::Generate(monsterName);
         GameSettleUp::GetInstance().monsterActors[monsterActor.id] = monsterActor;
+        log("[LevelGenerator] A monster generate finished. [id=%d, "
+            "HP=%d, attack=%d, defense=%d]", monsterActor.id, monsterActor.HP, monsterActor.attack, monsterActor.defense);
     }
 
     /* 按区域生成可能掉落的卡牌 */
@@ -23,9 +25,7 @@ void LevelGenerator::Generate(const AreaName &areaName)
     GameSettleUp::GetInstance().dropCards.push_back(Card::Get(CardDescriber::HPAddCard));
     GameSettleUp::GetInstance().dropCards.push_back(Card::Get(CardDescriber::AttackAddCard));
     GameSettleUp::GetInstance().dropCards.push_back(Card::Get(CardDescriber::DefenseAddCard));
-
-    /* 设置游戏的状态 */
-    GameSettleUp::GetInstance().stage = GameStage::PLACE_ACTOR_STATUS;
+    
     log("[LevelGenerator] A new level generate finished. [area=%s, monsterNum=%d]", curArea.name.c_str(),
         needGenerateMonsterNum);
     return;

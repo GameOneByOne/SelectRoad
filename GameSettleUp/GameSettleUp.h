@@ -33,11 +33,11 @@ public:
     // 人物控制相关
     std::map<int, Actor> playerActors; // 玩家的人物组
     std::map<int, Actor> monsterActors; // 怪物的人物组
-		  
+
     // 关卡相关
     AreaName currentArea; // 当前游戏区域
     std::vector<Card> dropCards; // 当前关卡结束后，应该掉落的卡牌
-    
+
     // 游戏推进相关
     GameStage stage;
     std::vector<BattleDetail> curBattleDetails;

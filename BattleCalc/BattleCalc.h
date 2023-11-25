@@ -17,14 +17,12 @@ enum class AttackType {
 
 class BattleDetail {
 public:
-    AttackRound round; // 标识是谁的攻击回合
+    std::string GetLog();
+
+public:
     AttackType attackType; // 本次攻击回合的攻击方式
     std::vector<int> attackActors; // 攻击方ID，可能多个
     std::vector<std::pair<int, int>> defenseActors; // 防御方<ID, 掉血值>，可能多个
-};
-
-class CommonAttackBattleInfo : public BattleDetail {
-    ;
 };
 
 class BattleCalc {
@@ -36,14 +34,13 @@ public:
 private:
     void PlayerAttackRound();
     void MonsterAttackRound();
-    
-    bool IsPlayerAllDead();
-    bool IsMonsterAllDead();
+    bool IsActorAllDead(const std::map<int, Actor> &actors);
+    void ResetActorAttackStatus(std::map<int, Actor> &players, std::map<int, Actor> &monsters);
 
-    const Actor &PickRandomActor(const std::vector<Actor> &Actors);
+    const Actor &PickRandomActor(const std::vector<Actor> &actors);
 
 private:
-    std::vector<Actor> players;
-    std::vector<Actor> monsters;
-    std::vector<BattleDetail> battleDetails;
+    bool playerRound = true;
+    int playerRandomNum = 0;
+    int monsterRandomNum = 0;
 };
