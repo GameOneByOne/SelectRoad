@@ -28,7 +28,7 @@ public:
     static BattleLayer *InitLayer();
     bool Init();
     void PlaceActor();
-    void PlayBattleDetails();
+    void PlayBattleDetails() const;
     void update(float delta) override;
 
 private:

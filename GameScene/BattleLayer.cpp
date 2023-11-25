@@ -133,8 +133,13 @@ void BattleLayer::PlaceActor()
     return;
 }
 
-void BattleLayer::PlayBattleDetails()
+void BattleLayer::PlayBattleDetails() const
 {
+    BattleDetail detail = GameSettleUp::GetInstance().curBattleDetails;
+    // 按战斗类型进行不同的操作
+
+
+    GameSettleUp::GetInstance().stage = GameStage::BATTLE_STATUS;
     return;
 }
 

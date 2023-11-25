@@ -40,5 +40,5 @@ public:
 
     // 游戏推进相关
     GameStage stage;
-    std::vector<BattleDetail> curBattleDetails;
+    BattleDetail curBattleDetails;
 };

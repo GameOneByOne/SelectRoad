@@ -1,5 +1,7 @@
 #include "Actor.h"
 
+USING_NS_CC;
+
 void Actor::AddCard(const Card &card)
 {
     switch(card.type) {
@@ -25,7 +27,12 @@ void Actor::AddAdditionCard(const Card &card)
 
 AttackType Actor::GetAttackType() const
 {
-    return canAttackTypes[cocos2d::random() % canAttackTypes.size()];
+    int randomNum = cocos2d::random() % canAttackTypes.size();
+    for (const auto &attacktype : canAttackTypes) {
+        if (randomNum-- == 0) {
+            return attacktype;
+        }
+    }
 }
 
 float Actor::GetDamageValue(const Actor &enemy) const

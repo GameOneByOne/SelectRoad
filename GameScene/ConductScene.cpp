@@ -53,7 +53,6 @@ void ConductScene::update(float delta)
 
     if (GameSettleUp::GetInstance().stage == GameStage::BATTLE_STATUS) {
         BattleCalc::GetInstance().Calc();
-        GameSettleUp::GetInstance().stage = GameStage::ANIMATION_STATUS;
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::ANIMATION_STATUS) {

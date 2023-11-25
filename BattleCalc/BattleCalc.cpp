@@ -6,7 +6,6 @@ USING_NS_CC;
 
 void BattleCalc::Calc()
 {
-    BattleDetail detail;
     auto &players = GameSettleUp::GetInstance().playerActors;
     auto &monsters = GameSettleUp::GetInstance().monsterActors;
 
@@ -20,9 +19,18 @@ void BattleCalc::Calc()
     }
 
     // 选择一个首要进攻Actor
+    int actorId = playerRound ? PickRandomAttacker(players, playerRandomNum) :
+        PickRandomAttacker(monsters, monsterRandomNum);
 
-    // 按获取到的攻击方式进行下一步处理
-    
+    // 进行战斗细节计算
+    BattleDetail detail = playerRound ? CalcBattleDetails(actorId, players, monsters) :
+        CalcBattleDetails(actorId, monsters, players);
+
+    GameSettleUp::GetInstance().curBattleDetails = detail;
+    GameSettleUp::GetInstance().stage = GameStage::ANIMATION_STATUS;
+
+    // 交换下次的攻击发起方
+    playerRound = !playerRound;
     return;
 }
 
@@ -62,21 +70,46 @@ void BattleCalc::ResetActorAttackStatus(std::map<int, Actor> &players, std::map<
     return;
 }
 
-void BattleCalc::PlayerAttackRound()
+int BattleCalc::PickRandomAttacker(std::map<int, Actor> &attackers, int randomNum)
 {
-    /* 一个玩家攻击回合，会随机挑选怪物进行战斗 */
-    return;
+    int curNum = 0;
+    int pickNum = random() % randomNum;
+    for (auto &actor : attackers) {
+        if ((actor.second.canAttack) && (curNum++ == pickNum)) {
+            actor.second.canAttack = false;
+            return actor.first;
+        }
+    }
+
+    return -1;
 }
 
-void BattleCalc::MonsterAttackRound()
+int BattleCalc::PickRandomEnemy(const std::map<int, Actor> &enemies)
 {
-    /* 选择一个随机的怪物进行攻击， 也选择一个随机的玩家被攻击 */
-    return;
+    int curNum = 0;
+    int randomNum = random() % enemies.size();
+    for (const auto &actor : enemies) {
+        if (curNum++ == randomNum) {
+            return actor.first;
+        }
+    }
 }
 
-const Actor &BattleCalc::PickRandomActor(const std::vector<Actor> &Actors)
+BattleDetail BattleCalc::CalcBattleDetails(int actorId, std::map<int, Actor> &attackers, std::map<int, Actor> &defenders)
 {
-    return Actors[random() % Actors.size()];
+    BattleDetail detail;
+    detail.attackActors.push_back(actorId);
+    
+    // 先获取到攻击方式
+    AttackType attackType = attackers[actorId].GetAttackType();
+    if (attackType == AttackType::COMMON) { // 普攻
+        int defender = PickRandomEnemy(defenders);
+        detail.defenseActors.push_back({defender, attackers[actorId].GetDamageValue(defenders[defender])});
+    } else {
+        log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    }
+    
+    return detail;
 }
 
 bool BattleCalc::IsActorAllDead(const std::map<int, Actor> &actors)
@@ -88,4 +121,21 @@ bool BattleCalc::IsActorAllDead(const std::map<int, Actor> &actors)
     }
 
     return true;
+}
+
+std::string BattleDetail::GetLog()
+{
+    std::string logContent = "[Battle Details] Attacker (";
+    for (const auto &id : attackActors) {
+        logContent += std::to_string(id);
+        logContent += " ";
+    }
+    logContent += ") Defenders (";
+
+    for (const auto &id : defenseActors) {
+        logContent += std::to_string(id.first);
+        logContent += " ";
+    }
+    logContent += ") ";
+    return logContent;
 }

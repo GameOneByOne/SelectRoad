@@ -46,7 +46,7 @@ public:
     int HPMax; // 最大生命值
     int attack; // 攻击力
     int defense; // 防御力
-    std::vector<AttackType> canAttackTypes; // 可以进行的攻击方式
+    std::set<AttackType> canAttackTypes; // 可以进行的攻击方式
 
     // Buff属性
     int luck; // 幸运值

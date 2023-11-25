@@ -22,7 +22,7 @@ public:
 public:
     AttackType attackType; // 本次攻击回合的攻击方式
     std::vector<int> attackActors; // 攻击方ID，可能多个
-    std::vector<std::pair<int, int>> defenseActors; // 防御方<ID, 掉血值>，可能多个
+    std::vector<std::pair<int, float>> defenseActors; // 防御方<ID, 掉血值>，可能多个
 };
 
 class BattleCalc {
@@ -32,12 +32,12 @@ public:
     void Calc();
     
 private:
-    void PlayerAttackRound();
-    void MonsterAttackRound();
     bool IsActorAllDead(const std::map<int, Actor> &actors);
     void ResetActorAttackStatus(std::map<int, Actor> &players, std::map<int, Actor> &monsters);
-
-    const Actor &PickRandomActor(const std::vector<Actor> &actors);
+    int PickRandomEnemy(const std::map<int, Actor> &enemies);
+    int PickRandomAttacker(std::map<int, Actor> &attackers, int randomNum);
+    
+    BattleDetail CalcBattleDetails(int actorId, std::map<int, Actor> &attackers, std::map<int, Actor> &defenders);
 
 private:
     bool playerRound = true;

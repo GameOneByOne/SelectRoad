@@ -99,6 +99,7 @@ Actor ActorFactory::CreateActor(const ActorModel &model)
     genActor.coolness = GameUtils::GetRandomFromRange(model.coolnessRange);
     genActor.duck = GameUtils::GetRandomFromRange(model.duckRange);
     genActor.luck = GameUtils::GetRandomFromRange(model.luckRange);
+    genActor.canAttackTypes = model.canAttackTypes;
     genActor.idleAnim = model.idleAnim;
     genActor.hurtAnim = model.hurtAnim;
     genActor.meleeAttackAnim = model.meleeAttackAnim;
