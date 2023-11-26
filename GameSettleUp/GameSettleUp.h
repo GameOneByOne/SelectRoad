@@ -9,7 +9,8 @@ enum class GameStage {
     LEVEL_GENERATE_STATUS,
     PLACE_ACTOR_STATUS,
     BATTLE_STATUS,
-    ANIMATION_STATUS,
+    PREPARE_ANIMATION_STATUS,
+    PLAY_ANIMATION_STATUS,
     SETTLE_UP_STATUS,
     BEGIN_SELECT_STATUS,
     WAIT_SELECT_STATUS,
@@ -27,7 +28,7 @@ public:
     void UnInit(); // 当游戏结束的时候，会调用这个函数，打印最终的游戏结束画面
 
     /* 对其他组件提供一些查询和获取方法 */
-    const Actor &GetActorById(int actorId) const;
+    Actor &GetActorById(int actorId);
 
 public:
     // 人物控制相关

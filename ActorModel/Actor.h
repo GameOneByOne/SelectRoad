@@ -28,6 +28,7 @@ public:
 
     // 动画资源
     GameDeclare::Anim::AnimInfo idleAnim;
+    GameDeclare::Anim::AnimInfo runAnim;
     GameDeclare::Anim::AnimInfo hurtAnim;
     GameDeclare::Anim::AnimInfo meleeAttackAnim;
 };
@@ -55,6 +56,7 @@ public:
 
     // 动画相关
     GameDeclare::Anim::AnimInfo idleAnim;
+    GameDeclare::Anim::AnimInfo runAnim;
     GameDeclare::Anim::AnimInfo hurtAnim;
     GameDeclare::Anim::AnimInfo meleeAttackAnim;
 

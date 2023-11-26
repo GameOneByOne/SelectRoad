@@ -12,12 +12,12 @@ enum class AttackRound {
 };
 
 enum class AttackType {
-    COMMON, // 预留攻击类型，方便做以后的游戏模式
+    COMMON = 0, // 预留攻击类型，方便做以后的游戏模式
 };
 
 class BattleDetail {
 public:
-    std::string GetLog();
+    std::string GetLog() const;
 
 public:
     AttackType attackType; // 本次攻击回合的攻击方式

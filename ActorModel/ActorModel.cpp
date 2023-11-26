@@ -23,6 +23,7 @@ ActorModel GetDefaultModel()
 
     object.idleAnim = GameDeclare::Anim::AnimInfo();
     object.hurtAnim = GameDeclare::Anim::AnimInfo();
+    object.runAnim = GameDeclare::Anim::AnimInfo();
     object.meleeAttackAnim = GameDeclare::Anim::AnimInfo();
     INIT_ONCE_END()
     return object;
@@ -40,6 +41,7 @@ ActorModel GetPlayerModel()
     object.canAttackTypes = {AttackType::COMMON};
     
     object.idleAnim = GameDeclare::Anim::playerIdleAnim;
+    object.runAnim = GameDeclare::Anim::playerRunAnim;
     object.hurtAnim = GameDeclare::Anim::playerHurtAnim;
     object.meleeAttackAnim = GameDeclare::Anim::playerAttackAnim;
     INIT_ONCE_END()
@@ -58,6 +60,7 @@ ActorModel GetMonsterOneModel()
     object.canAttackTypes = {AttackType::COMMON};
 
     object.idleAnim = GameDeclare::Anim::golemIdleAnim;
+    object.runAnim = GameDeclare::Anim::golemRunAnim;
     object.hurtAnim = GameDeclare::Anim::golemHurtAnim;
     object.meleeAttackAnim = GameDeclare::Anim::golemAttackAnim;
     INIT_ONCE_END()
@@ -101,6 +104,7 @@ Actor ActorFactory::CreateActor(const ActorModel &model)
     genActor.luck = GameUtils::GetRandomFromRange(model.luckRange);
     genActor.canAttackTypes = model.canAttackTypes;
     genActor.idleAnim = model.idleAnim;
+    genActor.runAnim = model.runAnim;
     genActor.hurtAnim = model.hurtAnim;
     genActor.meleeAttackAnim = model.meleeAttackAnim;
     return genActor;

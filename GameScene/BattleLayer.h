@@ -4,21 +4,20 @@
 #include <cocos2d.h>
 #include "ActorModel/ActorModel.h"
 
-class ActorNode : public cocos2d::Node {
+class ActorSprite : public cocos2d::Sprite {
 public:
-    static ActorNode *InitNode(int actorId, bool flipX = false);
+    static ActorSprite *Create(int actorId, bool flipX = false);
     bool Init(int actorId, bool flipX);
-    void update(float delta) override;
 
     // 这里定义一些Actor的动画调用
-    void Idle() const;
-    void MeleeAttack() const;
-    void Hurt() const;
-
+    void Idle();
+    void Run();
+    cocos2d::Animate *GetHurtAnim() const { return hurtAnim->clone(); }
+    cocos2d::Animate *GetMeleeAttackAnim() const { return meleeAttackAnim->clone(); }
 private:
     int id = -1;
-    cocos2d::Sprite *spriteActor = nullptr;
     cocos2d::Animate *idleAnim = nullptr;
+    cocos2d::Animate *runAnim = nullptr;
     cocos2d::Animate *hurtAnim = nullptr;
     cocos2d::Animate *meleeAttackAnim = nullptr;
 };
@@ -28,12 +27,18 @@ public:
     static BattleLayer *InitLayer();
     bool Init();
     void PlaceActor();
-    void PlayBattleDetails() const;
+    void PlayBattleDetail();
     void update(float delta) override;
+
+private:
+    ActorSprite *GetActorNodeById(int id) const;
+    void PlayCommonAttackBattleDetail(const BattleDetail &detail);
 
 private:
     std::pair<cocos2d::Vec2, cocos2d::Vec2> playersPlaceArea;
     std::pair<cocos2d::Vec2, cocos2d::Vec2> monsterPlaceArea;
-    std::map<int, ActorNode *> players;
-    std::map<int, ActorNode *> monsters;
+    std::map<int, ActorSprite *> players;
+    std::map<int, ActorSprite *> monsters;
+    bool isAttackerAnimEnd = true;
+    bool isDefenderAnimEnd = true;
 };

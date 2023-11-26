@@ -4,8 +4,9 @@
 
 enum ANIM_TAG {
     IDLE = 0,
-    HURT = 1,
-    MELEE_ATTACK = 2
+    RUN = 1,
+    HURT = 2,
+    MELEE_ATTACK = 3
 };
 
 namespace GameDeclare {
@@ -21,11 +22,13 @@ struct AnimInfo {
 
 /* 玩家的动画 */
 const AnimInfo playerIdleAnim = {animDir + "FallenAngels/Idle/0_Fallen_Angels_Idle_", 18, ".png"};
+const AnimInfo playerRunAnim = {animDir + "FallenAngels/Running/0_Fallen_Angels_Running_", 12, ".png"};
 const AnimInfo playerAttackAnim = {animDir + "FallenAngels/Slashing/0_Fallen_Angels_Slashing_", 12, ".png"};
 const AnimInfo playerHurtAnim = {animDir + "FallenAngels/Hurt/0_Fallen_Angels_Hurt_", 12, ".png"};
 
 /* 格伦石人的动画 */
 const AnimInfo golemIdleAnim = {animDir + "GolemOne/Idle/0_Golem_Idle_", 18, ".png"};
+const AnimInfo golemRunAnim = {animDir + "GolemOne/Running/0_Golem_Running_", 12, ".png"};
 const AnimInfo golemAttackAnim = {animDir + "GolemOne/Slashing/0_Golem_Slashing_", 12, ".png"};
 const AnimInfo golemHurtAnim = {animDir + "GolemOne/Hurt/0_Golem_Hurt_", 12, ".png"};
 

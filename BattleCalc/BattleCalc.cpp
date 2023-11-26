@@ -27,7 +27,7 @@ void BattleCalc::Calc()
         CalcBattleDetails(actorId, monsters, players);
 
     GameSettleUp::GetInstance().curBattleDetails = detail;
-    GameSettleUp::GetInstance().stage = GameStage::ANIMATION_STATUS;
+    GameSettleUp::GetInstance().stage = GameStage::PREPARE_ANIMATION_STATUS;
 
     // 交换下次的攻击发起方
     playerRound = !playerRound;
@@ -99,10 +99,9 @@ BattleDetail BattleCalc::CalcBattleDetails(int actorId, std::map<int, Actor> &at
 {
     BattleDetail detail;
     detail.attackActors.push_back(actorId);
-    
     // 先获取到攻击方式
-    AttackType attackType = attackers[actorId].GetAttackType();
-    if (attackType == AttackType::COMMON) { // 普攻
+    detail.attackType = attackers[actorId].GetAttackType();
+    if (detail.attackType == AttackType::COMMON) { // 普攻
         int defender = PickRandomEnemy(defenders);
         detail.defenseActors.push_back({defender, attackers[actorId].GetDamageValue(defenders[defender])});
     } else {
@@ -123,7 +122,7 @@ bool BattleCalc::IsActorAllDead(const std::map<int, Actor> &actors)
     return true;
 }
 
-std::string BattleDetail::GetLog()
+std::string BattleDetail::GetLog() const
 {
     std::string logContent = "[Battle Details] Attacker (";
     for (const auto &id : attackActors) {

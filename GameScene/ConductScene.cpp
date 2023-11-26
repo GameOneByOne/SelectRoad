@@ -55,8 +55,12 @@ void ConductScene::update(float delta)
         BattleCalc::GetInstance().Calc();
     }
 
-    if (GameSettleUp::GetInstance().stage == GameStage::ANIMATION_STATUS) {
-        battleLayer->PlayBattleDetails();
+    if (GameSettleUp::GetInstance().stage == GameStage::PREPARE_ANIMATION_STATUS) {
+        battleLayer->PlayBattleDetail();
+    }
+
+    if (GameSettleUp::GetInstance().stage == GameStage::PLAY_ANIMATION_STATUS) {
+        // nothing to do.
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::SETTLE_UP_STATUS) {
@@ -79,5 +83,6 @@ void ConductScene::update(float delta)
         GameSettleUp::GetInstance().stage = GameStage::LEVEL_GENERATE_STATUS;
     }
     
+    battleLayer->update(delta);
     return;
 }

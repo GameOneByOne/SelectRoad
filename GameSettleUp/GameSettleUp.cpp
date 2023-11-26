@@ -32,15 +32,15 @@ void GameSettleUp::ShowSelect()
     return;
 }
 
-const Actor &GameSettleUp::GetActorById(int actorId) const
+Actor &GameSettleUp::GetActorById(int actorId)
 {
-    for (const auto &actor : playerActors) {
+    for (auto &actor : playerActors) {
         if (actor.first == actorId) {
             return actor.second;
         }
     }
 
-    for (const auto &actor : monsterActors) {
+    for (auto &actor : monsterActors) {
         if (actor.first == actorId) {
             return actor.second;
         }
