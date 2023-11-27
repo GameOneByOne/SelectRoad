@@ -12,12 +12,6 @@ void BattleCalc::Calc()
     // 如果需要的话，对Actor的进攻进行重置
     ResetActorAttackStatus(players, monsters);
 
-    if (IsActorAllDead(players) || IsActorAllDead(monsters)) {
-        /* 战斗结束 */
-        GameSettleUp::GetInstance().stage = GameStage::SETTLE_UP_STATUS;
-        return;
-    }
-
     // 选择一个首要进攻Actor
     int actorId = playerRound ? PickRandomAttacker(players, playerRandomNum) :
         PickRandomAttacker(monsters, monsterRandomNum);
@@ -111,17 +105,6 @@ BattleDetail BattleCalc::CalcBattleDetails(int actorId, std::map<int, Actor> &at
     return detail;
 }
 
-bool BattleCalc::IsActorAllDead(const std::map<int, Actor> &actors)
-{
-    for (const auto &actor : actors) {
-        if (actor.second.HP > 0) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 std::string BattleDetail::GetLog() const
 {
     std::string logContent = "[Battle Details] Attacker (";
@@ -129,12 +112,19 @@ std::string BattleDetail::GetLog() const
         logContent += std::to_string(id);
         logContent += " ";
     }
-    logContent += ") Defenders (";
+    logContent = logContent.substr(0, logContent.length() - 1);
+    logContent += ") Attack Defenders (";
 
     for (const auto &id : defenseActors) {
+        const auto &actor = GameSettleUp::GetInstance().GetActorById(id.first);
         logContent += std::to_string(id.first);
+        logContent += "(HP:";
+        logContent += std::to_string(actor.HP + id.second);
+        logContent += "->";
+        logContent += std::to_string(actor.HP);
         logContent += " ";
     }
-    logContent += ") ";
+    logContent = logContent.substr(0, logContent.length() - 1);
+    logContent += ")";
     return logContent;
 }

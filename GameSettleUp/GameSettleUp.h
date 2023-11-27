@@ -6,7 +6,7 @@
 #include "..\LevelGenerator\GameArea.h"
 
 enum class GameStage {
-    LEVEL_GENERATE_STATUS,
+    LEVEL_GENERATE_STATUS = 0,
     PLACE_ACTOR_STATUS,
     BATTLE_STATUS,
     PREPARE_ANIMATION_STATUS,
@@ -27,8 +27,12 @@ public:
     void ShowSelect(); // 进入抉择状态
     void UnInit(); // 当游戏结束的时候，会调用这个函数，打印最终的游戏结束画面
 
+    void CleanDeadActor();
+
     /* 对其他组件提供一些查询和获取方法 */
     Actor &GetActorById(int actorId);
+    bool IsActorAlive(int actorId);
+
 
 public:
     // 人物控制相关

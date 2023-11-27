@@ -35,7 +35,7 @@ AttackType Actor::GetAttackType() const
     }
 }
 
-float Actor::GetDamageValue(const Actor &enemy) const
+int Actor::GetDamageValue(const Actor &enemy) const
 {
-    return MAX(0, static_cast<float>(attack) - static_cast<float>(enemy.defense) * 0.6f);
+    return MAX(0, attack - static_cast<int>(enemy.defense * 0.4f));
 }

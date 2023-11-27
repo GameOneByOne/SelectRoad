@@ -24,6 +24,7 @@ ActorModel GetDefaultModel()
     object.idleAnim = GameDeclare::Anim::AnimInfo();
     object.hurtAnim = GameDeclare::Anim::AnimInfo();
     object.runAnim = GameDeclare::Anim::AnimInfo();
+    object.dyingAnim = GameDeclare::Anim::AnimInfo();
     object.meleeAttackAnim = GameDeclare::Anim::AnimInfo();
     INIT_ONCE_END()
     return object;
@@ -43,6 +44,7 @@ ActorModel GetPlayerModel()
     object.idleAnim = GameDeclare::Anim::playerIdleAnim;
     object.runAnim = GameDeclare::Anim::playerRunAnim;
     object.hurtAnim = GameDeclare::Anim::playerHurtAnim;
+    object.dyingAnim = GameDeclare::Anim::playerDyingAnim;
     object.meleeAttackAnim = GameDeclare::Anim::playerAttackAnim;
     INIT_ONCE_END()
     return object;
@@ -62,6 +64,7 @@ ActorModel GetMonsterOneModel()
     object.idleAnim = GameDeclare::Anim::golemIdleAnim;
     object.runAnim = GameDeclare::Anim::golemRunAnim;
     object.hurtAnim = GameDeclare::Anim::golemHurtAnim;
+    object.dyingAnim = GameDeclare::Anim::golemDyingAnim;
     object.meleeAttackAnim = GameDeclare::Anim::golemAttackAnim;
     INIT_ONCE_END()
     return object;
@@ -106,6 +109,7 @@ Actor ActorFactory::CreateActor(const ActorModel &model)
     genActor.idleAnim = model.idleAnim;
     genActor.runAnim = model.runAnim;
     genActor.hurtAnim = model.hurtAnim;
+    genActor.dyingAnim = model.dyingAnim;
     genActor.meleeAttackAnim = model.meleeAttackAnim;
     return genActor;
 }

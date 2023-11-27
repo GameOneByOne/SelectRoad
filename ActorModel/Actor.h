@@ -30,6 +30,7 @@ public:
     GameDeclare::Anim::AnimInfo idleAnim;
     GameDeclare::Anim::AnimInfo runAnim;
     GameDeclare::Anim::AnimInfo hurtAnim;
+    GameDeclare::Anim::AnimInfo dyingAnim;
     GameDeclare::Anim::AnimInfo meleeAttackAnim;
 };
 
@@ -37,7 +38,7 @@ class Actor {
 public:
     void AddCard(const Card &card); // 添加能力
     AttackType GetAttackType() const; // 随机返回一种攻击方式
-    float GetDamageValue(const Actor &enemy) const; // 返回造成伤害的数值
+    int GetDamageValue(const Actor &enemy) const; // 返回造成伤害的数值
 
 public:
     int id; // 唯一标识，每个Actor都不一样
@@ -58,6 +59,7 @@ public:
     GameDeclare::Anim::AnimInfo idleAnim;
     GameDeclare::Anim::AnimInfo runAnim;
     GameDeclare::Anim::AnimInfo hurtAnim;
+    GameDeclare::Anim::AnimInfo dyingAnim;
     GameDeclare::Anim::AnimInfo meleeAttackAnim;
 
     // 用于其他用途的数据

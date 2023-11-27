@@ -11,14 +11,17 @@ public:
 
     // 这里定义一些Actor的动画调用
     void Idle();
-    void Run();
-    cocos2d::Animate *GetHurtAnim() const { return hurtAnim->clone(); }
-    cocos2d::Animate *GetMeleeAttackAnim() const { return meleeAttackAnim->clone(); }
+    bool AnimSequenceDone() const { return !runningAnim; }
+    void MeleeAttackToEnemy(const cocos2d::Vec2 &position, float speed);
+    void DamageFromAttacker(int damage, float delayTime);
+
 private:
     int id = -1;
+    bool runningAnim = false;
     cocos2d::Animate *idleAnim = nullptr;
     cocos2d::Animate *runAnim = nullptr;
     cocos2d::Animate *hurtAnim = nullptr;
+    cocos2d::Animate *dyingAnim = nullptr;
     cocos2d::Animate *meleeAttackAnim = nullptr;
 };
 
@@ -28,6 +31,7 @@ public:
     bool Init();
     void PlaceActor();
     void PlayBattleDetail();
+    void CleanBattleLayer();
     void update(float delta) override;
 
 private:
@@ -39,6 +43,5 @@ private:
     std::pair<cocos2d::Vec2, cocos2d::Vec2> monsterPlaceArea;
     std::map<int, ActorSprite *> players;
     std::map<int, ActorSprite *> monsters;
-    bool isAttackerAnimEnd = true;
-    bool isDefenderAnimEnd = true;
+    bool isAnimRunning = false;
 };
