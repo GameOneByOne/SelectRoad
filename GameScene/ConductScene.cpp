@@ -4,6 +4,7 @@
 #include "GameDeclare/ImageDeclare.h"
 #include "GameDeclare/PositionDeclare.h"
 #include "GameDeclare/SizeDeclare.h"
+#include "GameDeclare/FontDeclare.h"
 #include "GameSettleUp/GameSettleUp.h"
 #include "LevelGenerator/LevelGenerator.h"
 #include "BattleCalc/BattleCalc.h"
@@ -32,15 +33,84 @@ bool ConductScene::InitScene()
     GameSettleUp::GetInstance().Init();
 
     battleLayer = BattleLayer::InitLayer();
-    addChild(battleLayer, 10);
+    battleLayer->PlaceActor();
 
+    actorInfoSlideLayer = ActorInfoSlideLayer::InitLayer();
+    addChild(battleLayer, 5);
+    // addChild(actorInfoSlideLayer,10); // wait for dev.
+
+    InitBeforeBattleMenu();
+    InitBattlingMenu();
     scheduleUpdate();
     return true;
+}
+
+void ConductScene::InitBeforeBattleMenu()
+{
+    // 战斗前的菜单组，有查看伙伴信息，打开战斗日志，下一关
+    Label *checkPartnerLabel = Label::createWithTTF("查看伙伴信息", GameDeclare::Font::FELT_TTF, 28);
+    MenuItemLabel *checkPartnerMenuItem = MenuItemLabel::create(checkPartnerLabel, ConductScene::CheckPartnerInfoCallback);
+
+    Label *openBattleLogLabel = Label::createWithTTF("打开战斗日志", GameDeclare::Font::FELT_TTF, 28);
+    MenuItemLabel *openBattleLogMenuItem = MenuItemLabel::create(openBattleLogLabel, ConductScene::OpenBattleLogCallback);
+
+    Label *nextLevelLabel = Label::createWithTTF("往前走", GameDeclare::Font::FELT_TTF, 28);
+    MenuItemLabel *nextLevelMenuItem = MenuItemLabel::create(nextLevelLabel, ConductScene::NextLevelCallback);
+
+    beforeBattleMenus = Menu::create(checkPartnerMenuItem, openBattleLogMenuItem, nextLevelMenuItem, nullptr);
+    beforeBattleMenus->alignItemsHorizontally();
+    beforeBattleMenus->setAnchorPoint(GameDeclare::Position::MIDDLE_BOTTOM);
+    beforeBattleMenus->setPosition(GameDeclare::Size::screen.width / 2.0f, 15.0f);
+    addChild(beforeBattleMenus);
+    return;
+}
+
+void ConductScene::CheckPartnerInfoCallback(Ref *ref)
+{
+    log("open partner info.");
+    return;
+}
+
+void ConductScene::OpenBattleLogCallback(Ref *ref)
+{
+    log("open battle log.");
+    return;
+}
+
+void ConductScene::NextLevelCallback(Ref *ref)
+{
+    log("next level.");
+    GameSettleUp::GetInstance().stage = GameStage::LEVEL_GENERATE_STATUS;
+    return;
+}
+
+void ConductScene::InitBattlingMenu()
+{
+    // 战斗中的菜单有，加速
+    Label *accelerateBattleLabel = Label::createWithTTF("gogogo", GameDeclare::Font::FELT_TTF, 28);
+    MenuItemLabel *accelerateBattleMenuItem = MenuItemLabel::create(accelerateBattleLabel, ConductScene::CheckPartnerInfoCallback);
+    
+    battlingMenus = Menu::create(accelerateBattleMenuItem, nullptr);
+    battlingMenus->alignItemsHorizontally();
+    battlingMenus->setAnchorPoint(GameDeclare::Position::MIDDLE_BOTTOM);
+    battlingMenus->setPosition(GameDeclare::Size::screen.width / 2.0f, 15.0f);
+    addChild(battlingMenus);
+    return;
+}
+
+void ConductScene::AccelerateBattleCallback(Ref *ref)
+{
+    log("accelerate battle.");
+    return;
 }
 
 void ConductScene::update(float delta)
 {
     /* 这里的控制流，采用状态机的模式 */
+    if (GameSettleUp::GetInstance().stage == GameStage::BEFORE_BATTLE_STATUS) {
+        beforeBattleMenus->setVisible(true);
+        battlingMenus->setVisible(false);
+    }
     if (GameSettleUp::GetInstance().stage == GameStage::LEVEL_GENERATE_STATUS) {
         LevelGenerator::Generate(GameSettleUp::GetInstance().currentArea);
         GameSettleUp::GetInstance().stage = GameStage::PLACE_ACTOR_STATUS;
@@ -48,10 +118,12 @@ void ConductScene::update(float delta)
 
     if (GameSettleUp::GetInstance().stage == GameStage::PLACE_ACTOR_STATUS) {
         battleLayer->PlaceActor();
-        GameSettleUp::GetInstance().stage = GameStage::BATTLE_STATUS;
+        GameSettleUp::GetInstance().stage = GameStage::BATTLING_STATUS;
     }
 
-    if (GameSettleUp::GetInstance().stage == GameStage::BATTLE_STATUS) {
+    if (GameSettleUp::GetInstance().stage == GameStage::BATTLING_STATUS) {
+        beforeBattleMenus->setVisible(false);
+        battlingMenus->setVisible(true);
         BattleCalc::GetInstance().Calc();
     }
 

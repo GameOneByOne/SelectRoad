@@ -9,7 +9,7 @@ namespace {
 GameArea InitLostForestArea()
 {   
     INIT_ONCE_BEGIN(GameArea)
-    object.monsterMaxNum = 20;
+    object.monsterMaxNum = 4;
     object.name = "Lost Forest";
     object.describe = "this is lost forest.";
     object.monsters = {ActorName::MONSTER_ONE};

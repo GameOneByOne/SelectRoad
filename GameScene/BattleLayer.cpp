@@ -57,6 +57,17 @@ void ActorSprite::Idle()
     return;
 }
 
+void ActorSprite::DeadAndRemove()
+{
+    FadeOut *fadeOutAnim = FadeOut::create(1.0f);
+    CallFunc *removeAnim = CallFunc::create([this]() {
+        removeFromParent();
+    });
+    Sequence *runSeq = Sequence::create(fadeOutAnim, removeAnim, nullptr);
+    runAction(runSeq);
+    return;
+}
+
 void ActorSprite::MeleeAttackToEnemy(const cocos2d::Vec2 &position, float speed)
 {
     runningAnim = true;
@@ -228,8 +239,7 @@ void BattleLayer::CleanBattleLayer()
         if (GameSettleUp::GetInstance().IsActorAlive(actorIter->first)) {
             ++actorIter;
         } else {
-            FadeOut *fadeOutAnim = FadeOut::create(1.0f);
-            actorIter->second->runAction(fadeOutAnim);
+            actorIter->second->DeadAndRemove();
             actorIter = players.erase(actorIter);
         }
     }
@@ -238,11 +248,11 @@ void BattleLayer::CleanBattleLayer()
         if (GameSettleUp::GetInstance().IsActorAlive(actorIter->first)) {
             ++actorIter;
         } else {
-            FadeOut *fadeOutAnim = FadeOut::create(1.0f);
-            actorIter->second->runAction(fadeOutAnim);
+            actorIter->second->DeadAndRemove();
             actorIter = monsters.erase(actorIter);
         }
     }
+
     return;
 }
 

@@ -8,7 +8,7 @@ class ActorSprite : public cocos2d::Sprite {
 public:
     static ActorSprite *Create(int actorId, bool flipX = false);
     bool Init(int actorId, bool flipX);
-
+    void DeadAndRemove();
     // 这里定义一些Actor的动画调用
     void Idle();
     bool AnimSequenceDone() const { return !runningAnim; }
