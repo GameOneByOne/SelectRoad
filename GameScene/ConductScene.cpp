@@ -49,13 +49,19 @@ void ConductScene::InitBeforeBattleMenu()
 {
     // 战斗前的菜单组，有查看伙伴信息，打开战斗日志，下一关
     Label *checkPartnerLabel = Label::createWithTTF("查看伙伴信息", GameDeclare::Font::FELT_TTF, 28);
-    MenuItemLabel *checkPartnerMenuItem = MenuItemLabel::create(checkPartnerLabel, ConductScene::CheckPartnerInfoCallback);
+    MenuItemLabel *checkPartnerMenuItem = MenuItemLabel::create(checkPartnerLabel, [this](Ref *ref) -> void {
+        log("open partner info.");
+    });
 
     Label *openBattleLogLabel = Label::createWithTTF("打开战斗日志", GameDeclare::Font::FELT_TTF, 28);
-    MenuItemLabel *openBattleLogMenuItem = MenuItemLabel::create(openBattleLogLabel, ConductScene::OpenBattleLogCallback);
+    MenuItemLabel *openBattleLogMenuItem = MenuItemLabel::create(openBattleLogLabel, [this](Ref *ref) -> void {
+        log("open battle log.");
+    });
 
     Label *nextLevelLabel = Label::createWithTTF("往前走", GameDeclare::Font::FELT_TTF, 28);
-    MenuItemLabel *nextLevelMenuItem = MenuItemLabel::create(nextLevelLabel, ConductScene::NextLevelCallback);
+    MenuItemLabel *nextLevelMenuItem = MenuItemLabel::create(nextLevelLabel, [this](Ref *ref) -> void {
+        GameSettleUp::GetInstance().stage = GameStage::LEVEL_GENERATE_STATUS;
+    });
 
     beforeBattleMenus = Menu::create(checkPartnerMenuItem, openBattleLogMenuItem, nextLevelMenuItem, nullptr);
     beforeBattleMenus->alignItemsHorizontally();
@@ -65,42 +71,33 @@ void ConductScene::InitBeforeBattleMenu()
     return;
 }
 
-void ConductScene::CheckPartnerInfoCallback(Ref *ref)
-{
-    log("open partner info.");
-    return;
-}
-
-void ConductScene::OpenBattleLogCallback(Ref *ref)
-{
-    log("open battle log.");
-    return;
-}
-
-void ConductScene::NextLevelCallback(Ref *ref)
-{
-    log("next level.");
-    GameSettleUp::GetInstance().stage = GameStage::LEVEL_GENERATE_STATUS;
-    return;
-}
-
 void ConductScene::InitBattlingMenu()
 {
     // 战斗中的菜单有，加速
-    Label *accelerateBattleLabel = Label::createWithTTF("gogogo", GameDeclare::Font::FELT_TTF, 28);
-    MenuItemLabel *accelerateBattleMenuItem = MenuItemLabel::create(accelerateBattleLabel, ConductScene::CheckPartnerInfoCallback);
-    
-    battlingMenus = Menu::create(accelerateBattleMenuItem, nullptr);
+    Label *accelerateBattleLabel = Label::createWithTTF("快进速度", GameDeclare::Font::FELT_TTF, 28);
+    MenuItemLabel *accelerateBattleMenuItem = MenuItemLabel::create(accelerateBattleLabel, [this](Ref *ref) -> void {
+        Director::getInstance()->getScheduler()->setTimeScale(2.0f);
+        this->battlingMenus->getChildByTag(1)->setVisible(true);
+        this->battlingMenus->getChildByTag(0)->setVisible(false);
+    });
+
+    Label *decelerateBattleLabel = Label::createWithTTF("正常速度", GameDeclare::Font::FELT_TTF, 28);
+    MenuItemLabel *decelerateBattleMenuItem = MenuItemLabel::create(decelerateBattleLabel, [this](Ref *ref) -> void {
+        // this->battleLayer->SetBattleSpeed(0.5f);
+        Director::getInstance()->getScheduler()->setTimeScale(1.0f);
+
+        this->battlingMenus->getChildByTag(1)->setVisible(false);
+        this->battlingMenus->getChildByTag(0)->setVisible(true);
+    });
+    decelerateBattleMenuItem->setVisible(false);
+
+    battlingMenus = Menu::create();
     battlingMenus->alignItemsHorizontally();
     battlingMenus->setAnchorPoint(GameDeclare::Position::MIDDLE_BOTTOM);
     battlingMenus->setPosition(GameDeclare::Size::screen.width / 2.0f, 15.0f);
+    battlingMenus->addChild(accelerateBattleMenuItem, 1, 0);
+    battlingMenus->addChild(decelerateBattleMenuItem, 1, 1);
     addChild(battlingMenus);
-    return;
-}
-
-void ConductScene::AccelerateBattleCallback(Ref *ref)
-{
-    log("accelerate battle.");
     return;
 }
 

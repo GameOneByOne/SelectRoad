@@ -13,12 +13,7 @@ public:
 
 private:
     void InitBeforeBattleMenu();
-    static void CheckPartnerInfoCallback(Ref* ref);
-    static void OpenBattleLogCallback(Ref *ref);
-    static void NextLevelCallback(Ref *ref);
-
     void InitBattlingMenu();
-    static void AccelerateBattleCallback(Ref *ref);
 
 private:
     BattleLayer *battleLayer = nullptr;
