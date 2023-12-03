@@ -34,10 +34,11 @@ bool ConductScene::InitScene()
 
     battleLayer = BattleLayer::InitLayer();
     battleLayer->PlaceActor();
+    addChild(battleLayer, 5);
 
     actorInfoSlideLayer = ActorInfoSlideLayer::InitLayer();
-    addChild(battleLayer, 5);
-    // addChild(actorInfoSlideLayer,10); // wait for dev.
+    addChild(actorInfoSlideLayer,10); // wait for dev.
+    actorInfoSlideLayer->SetSlidePosition({20.0f, 20.0f});
 
     InitBeforeBattleMenu();
     InitBattlingMenu();
@@ -50,7 +51,7 @@ void ConductScene::InitBeforeBattleMenu()
     // 战斗前的菜单组，有查看伙伴信息，打开战斗日志，下一关
     Label *checkPartnerLabel = Label::createWithTTF("查看伙伴信息", GameDeclare::Font::FELT_TTF, 28);
     MenuItemLabel *checkPartnerMenuItem = MenuItemLabel::create(checkPartnerLabel, [this](Ref *ref) -> void {
-        log("open partner info.");
+        actorInfoSlideLayer->ToggleShow();
     });
 
     Label *openBattleLogLabel = Label::createWithTTF("打开战斗日志", GameDeclare::Font::FELT_TTF, 28);
@@ -153,5 +154,6 @@ void ConductScene::update(float delta)
     }
     
     battleLayer->update(delta);
+    actorInfoSlideLayer->update(delta);
     return;
 }
