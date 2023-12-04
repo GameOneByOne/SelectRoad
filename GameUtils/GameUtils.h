@@ -14,4 +14,5 @@ float GetRandomFromRangeF(const std::pair<float, float> &range);
 
 /* 动画相关 */
 cocos2d::Animate *GetAnimate(GameDeclare::Anim::AnimInfo animInfo, float delay = 0.05f, unsigned int loops = -1);
+cocos2d::Sprite *GetAnimateFrame(GameDeclare::Anim::AnimInfo animInfo, int index = 0);
 }

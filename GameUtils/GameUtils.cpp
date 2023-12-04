@@ -27,11 +27,17 @@ Animate *GetAnimate(GameDeclare::Anim::AnimInfo animInfo, float delay, unsigned 
     SpriteFrame *frame = nullptr;
     Vector<SpriteFrame *> frameVec;
     for (int i = 0; i < animInfo.animNum; ++i) {
-        frame = SpriteFrame::create(StringUtils::format((animInfo.prefixPath + "%s" + animInfo.suffixPath).c_str(), FormatIndex(i).c_str()), animInfo.rect);
+        frame = SpriteFrame::create((animInfo.prefixPath + FormatIndex(i) + animInfo.suffixPath), animInfo.rect);
         frameVec.pushBack(frame);
     }
 
     Animation *ani = Animation::createWithSpriteFrames(frameVec, delay, loops);
     return Animate::create(ani);
+}
+
+cocos2d::Sprite *GetAnimateFrame(GameDeclare::Anim::AnimInfo animInfo, int index)
+{
+    Sprite *sprite = Sprite::create(animInfo.prefixPath + FormatIndex(index)+ animInfo.suffixPath);
+    return sprite;
 }
 }

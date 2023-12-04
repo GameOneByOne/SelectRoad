@@ -16,6 +16,7 @@ public:
 private:
     void InitConstValue();
     void InitMouseListener();
+    void InitActorInfo();
 
 private:
     float layerWidth = 0.0f;
