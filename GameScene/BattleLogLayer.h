@@ -3,18 +3,20 @@
 #include <cocos2d.h>
 #include "GUI/CCScrollView/CCScrollView.h"
 #include "ui/UIScrollView.h"
+#include "ui/UIText.h"
 
-class ActorInfoSlideLayer : public cocos2d::Layer {
+class BattleLogLayer : public cocos2d::Layer {
 public:
-    static ActorInfoSlideLayer *InitLayer();
+    static BattleLogLayer *InitLayer();
     bool Init();
     void SetSlidePosition(const cocos2d::Vec2 &pos);
     void ToggleShow();
+    void AddLog(const std::string &log);
 
 private:
     void InitConstValue();
+    void InitLogContent();
     void InitMouseListener();
-    void InitActorInfo();
 
 private:
     float layerWidth = 0.0f;
@@ -25,4 +27,5 @@ private:
     float slideX = 0.0f;
     float slideY = 0.0f;
     cocos2d::ui::ScrollView *scrollView = nullptr;
+    std::string battleLog;
 };

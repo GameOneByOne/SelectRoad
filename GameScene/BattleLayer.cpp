@@ -300,7 +300,6 @@ void BattleLayer::update(float delta)
             }
         }
         // 打印战斗日志
-        log("%s", GameSettleUp::GetInstance().curBattleDetails.GetLog().c_str());
         isAnimRunning = false;
         GameSettleUp::GetInstance().stage = GameStage::SETTLE_UP_STATUS;
     }

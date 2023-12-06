@@ -136,8 +136,3 @@ void ActorInfoSlideLayer::SetSlidePosition(const cocos2d::Vec2 &pos)
     setPosition(-1 * layerWidth, slideY);
     return;
 }
-
-void ActorInfoSlideLayer::update(float delta)
-{
-    return;
-}

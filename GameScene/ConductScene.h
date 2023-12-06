@@ -2,6 +2,7 @@
 
 #include "cocos2d.h"
 #include "ActorInfoSlideLayer.h"
+#include "BattleLogLayer.h"
 #include "BattleLayer.h"
 
 class ConductScene : public cocos2d::Scene
@@ -12,14 +13,13 @@ public:
     virtual void update(float delta) override;
 
 private:
-    void InitBeforeBattleMenu();
-    void InitBattlingMenu();
+    void InitMenu();
 
 private:
     BattleLayer *battleLayer = nullptr;
     ActorInfoSlideLayer *actorInfoSlideLayer = nullptr;
+    BattleLogLayer *battleLogLayer = nullptr;
     
     // 用户菜单组
-    cocos2d::Menu *beforeBattleMenus = nullptr;
-    cocos2d::Menu *battlingMenus = nullptr;
+    cocos2d::Menu *ConductMenus = nullptr;
 };
