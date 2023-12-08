@@ -7,7 +7,7 @@ void GameSettleUp::Init()
 {
     /* 初始化所有游戏设置 */
     currentArea = AreaName::LOST_FOREST;
-    stage = GameStage::BEFORE_BATTLE_STATUS;
+    stage = GameStage::PREPARE_BATTLE_STATUS;
     playerActors.clear();
     Actor playerActor = ActorFactory::Generate(ActorName::PLAYER);
     Actor playerActor1 = ActorFactory::Generate(ActorName::PLAYER);
@@ -34,7 +34,7 @@ void GameSettleUp::SettleUp()
         stage = GameStage::GAMEOVER_STATUS;
     } else if (monsterActors.empty()) {
         // 进入下一关
-        stage = GameStage::BEFORE_BATTLE_STATUS;
+        stage = GameStage::PREPARE_BATTLE_STATUS;
     } else {
         // 继续战斗
         stage = GameStage::BATTLING_STATUS;
@@ -50,7 +50,7 @@ void GameSettleUp::UnInit()
 
 void GameSettleUp::ShowSelect()
 {
-    stage = GameStage::LEVEL_GENERATE_STATUS;
+    stage = GameStage::ENTER_BATTLE_STATUS;
     return;
 }
 

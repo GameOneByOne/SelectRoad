@@ -281,7 +281,6 @@ void BattleLayer::PlayCommonAttackBattleDetail(const BattleDetail &detail)
     attackerNode->MeleeAttackToEnemy(enemyPosition, animSpeed);
     defenderNode->DamageFromAttacker(detail.defenseActors[0].second, animSpeed);
     isAnimRunning = true;
-    GameSettleUp::GetInstance().stage = GameStage::PLAY_ANIMATION_STATUS;
     return;
 }
 
@@ -299,10 +298,9 @@ void BattleLayer::update(float delta)
                 return;
             }
         }
-        // 打印战斗日志
+
         isAnimRunning = false;
         GameSettleUp::GetInstance().stage = GameStage::SETTLE_UP_STATUS;
     }
-    
     return;
 }

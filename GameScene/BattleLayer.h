@@ -32,6 +32,7 @@ public:
     void PlaceActor();
     void PlayBattleDetail();
     void CleanBattleLayer();
+    bool IsBattling() { return isAnimRunning; }
     void update(float delta) override;
 
 private:

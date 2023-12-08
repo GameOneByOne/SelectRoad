@@ -39,8 +39,6 @@ bool BattleLogLayer::Init()
     scrollView->setBackGroundColor(Color3B::BLACK);
     scrollView->setBackGroundColorType(ui::Layout::BackGroundColorType::SOLID);
     addChild(scrollView);
-
-    
     
     // 初始化主边界框
     DrawNode *boundNode = DrawNode::create();
@@ -70,7 +68,6 @@ void BattleLogLayer::InitMouseListener()
         float scrollY = ((EventMouse*)event)->getScrollY();
         curOffset = MAX(MIN(0, curOffset - span * scrollY), maxOffset);
         this->scrollView->setInnerContainerPosition({0.0f, -1 * curOffset});
-        log("???????????????????  curOffset=%f   maxOffset=%f", curOffset * -1, maxOffset);
         
     };
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_mouseListener, this);

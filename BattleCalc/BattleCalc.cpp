@@ -21,7 +21,6 @@ void BattleCalc::Calc()
         CalcBattleDetails(actorId, monsters, players);
 
     GameSettleUp::GetInstance().curBattleDetails = detail;
-    GameSettleUp::GetInstance().stage = GameStage::PREPARE_ANIMATION_STATUS;
 
     // 交换下次的攻击发起方
     playerRound = !playerRound;

@@ -64,7 +64,7 @@ void ConductScene::InitMenu()
 
     Label *nextLevelLabel = Label::createWithTTF("往前走", GameDeclare::Font::FELT_TTF, 28);
     MenuItemLabel *nextLevelMenuItem = MenuItemLabel::create(nextLevelLabel, [this](Ref *ref) -> void {
-        GameSettleUp::GetInstance().stage = GameStage::LEVEL_GENERATE_STATUS;
+        GameSettleUp::GetInstance().stage = GameStage::ENTER_BATTLE_STATUS;
     });
 
     // 战斗中的菜单有，加速
@@ -100,30 +100,21 @@ void ConductScene::InitMenu()
 void ConductScene::update(float delta)
 {
     /* 这里的控制流，采用状态机的模式 */
-    if (GameSettleUp::GetInstance().stage == GameStage::BEFORE_BATTLE_STATUS) {
-        // nothing to do.
+    if (GameSettleUp::GetInstance().stage == GameStage::PREPARE_BATTLE_STATUS) {
+        // noting to do.
     }
-    if (GameSettleUp::GetInstance().stage == GameStage::LEVEL_GENERATE_STATUS) {
+    if (GameSettleUp::GetInstance().stage == GameStage::ENTER_BATTLE_STATUS) {
         LevelGenerator::Generate(GameSettleUp::GetInstance().currentArea);
-        GameSettleUp::GetInstance().stage = GameStage::PLACE_ACTOR_STATUS;
-    }
-
-    if (GameSettleUp::GetInstance().stage == GameStage::PLACE_ACTOR_STATUS) {
         battleLayer->PlaceActor();
         GameSettleUp::GetInstance().stage = GameStage::BATTLING_STATUS;
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::BATTLING_STATUS) {
-        BattleCalc::GetInstance().Calc();
-    }
-
-    if (GameSettleUp::GetInstance().stage == GameStage::PREPARE_ANIMATION_STATUS) {
-        battleLayer->PlayBattleDetail();
-        battleLogLayer->AddLog(GameSettleUp::GetInstance().curBattleDetails.GetLog());
-    }
-
-    if (GameSettleUp::GetInstance().stage == GameStage::PLAY_ANIMATION_STATUS) {
-        // nothing to do.
+        if (!battleLayer->IsBattling()) {
+            BattleCalc::GetInstance().Calc();
+            battleLayer->PlayBattleDetail();
+            battleLogLayer->AddLog(GameSettleUp::GetInstance().curBattleDetails.GetLog());
+        }
     }
 
     if (GameSettleUp::GetInstance().stage == GameStage::SETTLE_UP_STATUS) {
@@ -143,7 +134,7 @@ void ConductScene::update(float delta)
     }
     
     if (GameSettleUp::GetInstance().stage == GameStage::END_SELECT_STATUS) {
-        GameSettleUp::GetInstance().stage = GameStage::LEVEL_GENERATE_STATUS;
+        GameSettleUp::GetInstance().stage = GameStage::ENTER_BATTLE_STATUS;
     }
     
     battleLayer->update(delta);
