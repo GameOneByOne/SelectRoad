@@ -43,6 +43,9 @@ bool ConductScene::InitScene()
     battleLogLayer = BattleLogLayer::InitLayer();
     addChild(battleLogLayer,20);
     battleLogLayer->SetSlidePosition({GameDeclare::Size::screen.width / 3.0f * 2.0f, 0.0f});
+
+    selectLayer = SelectLayer::InitLayer();
+    addChild(selectLayer, 20);
     
     InitMenu();
     scheduleUpdate();
@@ -125,16 +128,9 @@ void ConductScene::update(float delta)
         GameSettleUp::GetInstance().UnInit();
     }
 
-    if (GameSettleUp::GetInstance().stage == GameStage::BEGIN_SELECT_STATUS) {
-        GameSettleUp::GetInstance().stage = GameStage::WAIT_SELECT_STATUS;
-    }
-
-    if (GameSettleUp::GetInstance().stage == GameStage::WAIT_SELECT_STATUS) {
-        // nothing to do.
-    }
-    
-    if (GameSettleUp::GetInstance().stage == GameStage::END_SELECT_STATUS) {
-        GameSettleUp::GetInstance().stage = GameStage::ENTER_BATTLE_STATUS;
+    if (GameSettleUp::GetInstance().stage == GameStage::SELECT_STATUS) {
+        selectLayer->ShowSelect();
+        // wait to dev.
     }
     
     battleLayer->update(delta);

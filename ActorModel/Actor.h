@@ -3,7 +3,7 @@
 
 #include <cocos2d.h>
 #include "BattleCalc/BattleCalc.h"
-#include "CardDescriber/CardDescriber.h"
+#include "ItemDescriber/Item.h"
 #include "GameDeclare/AnimDeclare.h"
 
 enum class ActorName {
@@ -36,7 +36,6 @@ public:
 
 class Actor {
 public:
-    void AddCard(const Card &card); // 添加能力
     AttackType GetAttackType() const; // 随机返回一种攻击方式
     int GetDamageValue(const Actor &enemy) const; // 返回造成伤害的数值
 
@@ -64,7 +63,4 @@ public:
 
     // 用于其他用途的数据
     bool canAttack = true;
-
-private:
-    void AddAdditionCard(const Card &card);
 };

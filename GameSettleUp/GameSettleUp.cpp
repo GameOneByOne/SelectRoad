@@ -1,5 +1,6 @@
 #include "GameSettleUp.h"
 #include <cocos2d.h>
+#include "ItemDescriber/ItemFactory.h"
 
 USING_NS_CC;
 
@@ -10,15 +11,10 @@ void GameSettleUp::Init()
     stage = GameStage::PREPARE_BATTLE_STATUS;
     playerActors.clear();
     Actor playerActor = ActorFactory::Generate(ActorName::PLAYER);
-    Actor playerActor1 = ActorFactory::Generate(ActorName::PLAYER);
-    Actor playerActor2 = ActorFactory::Generate(ActorName::PLAYER);
-    Actor playerActor3 = ActorFactory::Generate(ActorName::PLAYER);
-    Actor playerActor4 = ActorFactory::Generate(ActorName::PLAYER);
     playerActors[playerActor.id] = playerActor;
-    playerActors[playerActor1.id] = playerActor1;
-    playerActors[playerActor2.id] = playerActor2;
-    playerActors[playerActor3.id] = playerActor3;
-    playerActors[playerActor4.id] = playerActor4;
+
+    /* 初始化物品工厂 */
+    ItemFactory::InitItemFactory();
     log("[GameSettleUp] Game SettleUp Machine init finished.");
     return;
 }
@@ -34,7 +30,7 @@ void GameSettleUp::SettleUp()
         stage = GameStage::GAMEOVER_STATUS;
     } else if (monsterActors.empty()) {
         // 进入下一关
-        stage = GameStage::PREPARE_BATTLE_STATUS;
+        stage = GameStage::SELECT_STATUS;
     } else {
         // 继续战斗
         stage = GameStage::BATTLING_STATUS;

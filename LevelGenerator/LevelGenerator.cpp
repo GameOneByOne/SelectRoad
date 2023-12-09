@@ -1,6 +1,6 @@
 #include "LevelGenerator.h"
 #include "GameArea.h"
-#include "CardDescriber/CardDescriber.h"
+#include "ItemDescriber/Item.h"
 
 USING_NS_CC;
 
@@ -19,12 +19,6 @@ void LevelGenerator::Generate(const AreaName &areaName)
         log("[LevelGenerator] A monster generate finished. [id=%d, "
             "HP=%d, attack=%d, defense=%d]", monsterActor.id, monsterActor.HP, monsterActor.attack, monsterActor.defense);
     }
-
-    /* 按区域生成可能掉落的卡牌 */
-    GameSettleUp::GetInstance().dropCards.clear();
-    GameSettleUp::GetInstance().dropCards.push_back(Card::Get(CardDescriber::HPAddCard));
-    GameSettleUp::GetInstance().dropCards.push_back(Card::Get(CardDescriber::AttackAddCard));
-    GameSettleUp::GetInstance().dropCards.push_back(Card::Get(CardDescriber::DefenseAddCard));
     
     log("[LevelGenerator] A new level generate finished. [area=%s, monsterNum=%d]", curArea.name.c_str(),
         needGenerateMonsterNum);

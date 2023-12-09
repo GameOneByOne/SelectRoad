@@ -4,6 +4,7 @@
 #include "ActorInfoSlideLayer.h"
 #include "BattleLogLayer.h"
 #include "BattleLayer.h"
+#include "SelectLayer.h"
 
 class ConductScene : public cocos2d::Scene
 {
@@ -19,7 +20,8 @@ private:
     BattleLayer *battleLayer = nullptr;
     ActorInfoSlideLayer *actorInfoSlideLayer = nullptr;
     BattleLogLayer *battleLogLayer = nullptr;
-    
+    SelectLayer *selectLayer = nullptr;    
+
     // 用户菜单组
     cocos2d::Menu *ConductMenus = nullptr;
 };

@@ -11,9 +11,7 @@ enum class GameStage {
     PLACE_ACTOR_STATUS,
     BATTLING_STATUS,
     SETTLE_UP_STATUS,
-    BEGIN_SELECT_STATUS,
-    WAIT_SELECT_STATUS,
-    END_SELECT_STATUS,
+    SELECT_STATUS,
     GAMEOVER_STATUS
 };
 
@@ -40,7 +38,6 @@ public:
 
     // 关卡相关
     AreaName currentArea; // 当前游戏区域
-    std::vector<Card> dropCards; // 当前关卡结束后，应该掉落的卡牌
 
     // 游戏推进相关
     GameStage stage;

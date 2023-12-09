@@ -2,7 +2,7 @@
 #include <map>
 #include <functional>
 #include "ActorModel/ActorModel.h"
-#include "CardDescriber/CardDescriber.h"
+#include "..\ItemDescriber\Item.h"
 #include "GameDeclare/DefineDeclare.h"
 
 namespace {
@@ -13,7 +13,7 @@ GameArea InitLostForestArea()
     object.name = "Lost Forest";
     object.describe = "this is lost forest.";
     object.monsters = {ActorName::MONSTER_ONE};
-    object.cards = {Card::Get(CardDescriber::AttackAddCard), Card::Get(CardDescriber::DefenseAddCard), Card::Get(CardDescriber::HPAddCard)};
+    object.dropItems = {ItemName::A_ITEM, ItemName::B_ITEM, ItemName::C_ITEM};
     INIT_ONCE_END()
     return object;
 }
@@ -27,4 +27,9 @@ GameArea GameArea::GetInfo(AreaName area)
 {
     const auto iter = AREA_INFO_MAP.find(area);
     return iter->second();
+}
+
+std::vector<std::string> GameArea::GetDropItems()
+{
+    return dropItems;
 }
